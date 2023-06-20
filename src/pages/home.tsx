@@ -7,8 +7,9 @@ import {
   VideoCameraOutlined,
 } from '@ant-design/icons';
 import { Layout, Menu, Button, theme } from 'antd';
-import LeaveRequest from './leaveRequst.tsx';
-import ClassInfo from './classInfo.tsx';
+import LeaveRequest from './leaveInfo/leaveRequst.tsx';
+import MyCourse from './mycourse/mycourse.tsx';
+import Me from './me/me.tsx';
 
 const { Header, Sider, Content } = Layout;
 
@@ -71,7 +72,8 @@ const Home: React.FC = () => {
           }}
         >
           {selectedTab=='1' && <LeaveRequest></LeaveRequest>}
-          {selectedTab=='2' && <ClassInfo></ClassInfo> }
+          {selectedTab=='2' && <MyCourse></MyCourse> }
+          {selectedTab=='3' && <Me></Me> }
           
         </Content>
       </Layout>
