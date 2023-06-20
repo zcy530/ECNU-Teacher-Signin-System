@@ -26,6 +26,7 @@ const CheckAllSignin = (props:Props) => {
     const [data,setData] = useState<DataType[]>([])
     const [signway,setSignway] = useState<string>('face')
     const [week, setWeek] = useState<number>(1);
+    const [kouling, setKouling] = useState<string>('')
 
     useEffect(() => {
         fetch(`http://8.130.86.79:8072/signin-service/course/signup?courseId=${props.courseId}&professorId=5103909&term=2023年春季学期`, {
@@ -96,9 +97,9 @@ const CheckAllSignin = (props:Props) => {
             "course_id": props.courseId,
             "week": week,
             "professor_id": 5103909,
-            "method": signway,
-            "start_time": "2023-06-21 00:00:00",
-            "end_time": "2023-06-21 23:59:50",
+            "method": signway=='password'?kouling:signway,
+            "start_time": "2023-06-21 10:00:00",
+            "end_time": "2023-06-21 11:00:00",
             "term": "2023年春季学期"
         }
           fetch('http://8.130.86.79:8072/signin-service/course/sign/add', {
@@ -132,7 +133,7 @@ const CheckAllSignin = (props:Props) => {
         ]}
     />
 
-    {signway=='password' && <Input style={{width:230,marginLeft:20}} placeholder="Basic usage" />}
+    {signway=='password' && <Input style={{width:230,marginLeft:20}} placeholder="Basic usage" onChange={(e)=>setKouling(e.target.value)}/>}
 
     <div style={{marginBottom:15,marginTop:15, fontSize:14}}>请选择签到时间</div>
     <TimePicker.RangePicker />

@@ -36,17 +36,16 @@ const LeaveRequest: React.FC = () => {
   const [courseId, setCourseId] = useState("CRXFA-31yemoDAS0")
   
 
-  useEffect(() => {
-
+  const getLeaveInfo = () => {
     const leavebody = {
-        "professorId": "5103909",
-        "status": "1",
-        "courseId": courseId,
-        "term": term,
-        "pageParams": {
-            "pageNumber": "1",
-            "pageSize": "10"
-        }
+      "professorId": "5103909",
+      "status": "0",
+      "courseId": courseId,
+      "term": term,
+      "pageParams": {
+          "pageNumber": "1",
+          "pageSize": "10"
+      }
     }
     fetch(`http://8.130.86.79:8072/leave-service/professor/leaverecord`, {
       method: 'POST',
@@ -60,6 +59,10 @@ const LeaveRequest: React.FC = () => {
       console.log(value)
       setLeaveData(value)
     })
+  }
+
+  useEffect(() => {
+    getLeaveInfo()
   },[courseId])
   
   const handleChange = (value: string) => {
@@ -159,6 +162,75 @@ const LeaveRequest: React.FC = () => {
       ),
   });
 
+  const getStatus = (id:number) => {
+    if(id==0){
+      return '待审批'
+    }
+    if(id==1 || id==2){
+      return '已通过'
+    }
+    if(id==-1){
+      return '不通过'
+    }
+  }
+
+  const getColor = (id:number) => {
+    if(id==0){
+      return 'blue'
+    }
+    if(id==1 || id==2){
+      return 'green'
+    }
+    if(id==-1){
+      return 'red'
+    }
+  }
+
+  const agreeHandler = (noteId:number) => {
+    const agreeInfo = {
+      "noteId": noteId,
+      "status": 1,
+      "refuseReason": "no",
+      "name":"杨秀英",
+      "id":"5103909"
+    }
+
+    fetch(`http://8.130.86.79:8072/leave-service//professor/leaverecord/update`, {
+      method: 'PUT',
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8'
+      },
+      body: JSON.stringify(agreeInfo)
+    })
+    .then(response => response.json())
+    .then((value)=> {
+      getLeaveInfo()
+      console.log(value);
+    })
+  }
+
+  const refuseHandler = (noteId:number) => {
+    const refuseInfo = {
+      "noteId": noteId,
+      "status": -1,
+      "refuseReason": "no",
+      "name":"杨秀英",
+      "id":"5103909"
+    }
+
+    fetch(`http://8.130.86.79:8072/leave-service//professor/leaverecord/update`, {
+      method: 'PUT',
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8'
+      },
+      body: JSON.stringify(refuseInfo)
+    })
+    .then(response => response.json())
+    .then((value)=> {
+      getLeaveInfo();
+      console.log(value);
+    })
+  }
 
   const columns: ColumnsType<DataType> = [
     {
@@ -197,7 +269,10 @@ const LeaveRequest: React.FC = () => {
       dataIndex: 'status',
       key: 'status',
       ...getColumnSearchProps('status'),
-      render: () => (<Tag color={'green'} key={'2'}>待审核</Tag>
+      render: (_, { status }) => (
+          <Tag color={getColor(status)} key={status}>
+            {getStatus(status)}
+          </Tag>
       ),
     },
     {
@@ -205,10 +280,15 @@ const LeaveRequest: React.FC = () => {
       dataIndex: 'option',
       key: 'option',
       width: '20%',
-      render: () => (
+      render: (_,{noteId}) => (
         <Space size="middle">
-          <Button type='primary'>同意</Button>
-          <Button type='primary'>拒绝</Button>
+          <Button type='primary' onClick={()=>{
+            console.log(noteId);
+            agreeHandler(noteId)
+          }}>同意</Button>
+          <Button type='primary' onClick={()=>{
+            refuseHandler(noteId)
+          }}>拒绝</Button>
         </Space>
       ),
     },

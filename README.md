@@ -1,3 +1,9 @@
+1. 登陆注册
+2. 同意和拒绝申请 *
+3. 状态的展示和改变 *
+4. 修改考勤状态 *
+5. 试一下发起口令签到 *
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

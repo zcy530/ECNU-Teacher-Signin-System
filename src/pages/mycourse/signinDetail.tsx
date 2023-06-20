@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Button, Col, Descriptions, Input, InputRef, Radio, RadioChangeEvent, Row, Select, Space, Statistic, TimePicker } from 'antd';
+import { Button, Col, Descriptions, Input, InputRef, Radio, RadioChangeEvent, Row, Select, Space, Statistic, Tag, TimePicker } from 'antd';
 import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
 import Table, { ColumnsType, TableProps } from 'antd/es/table';
 import { StringLiteral } from 'typescript';
@@ -15,6 +15,36 @@ interface DataType {
     name: string;
     time: string;
     status: string;
+}
+
+const getStatus = (id:string) => {
+    if(id=='normal'){
+      return '正常出勤'
+    }
+    else if(id=='late'){
+      return '迟到'
+    }
+    else if(id=='absent'){
+      return '旷课'
+    }
+    else{
+      return '请假'
+    }
+}
+
+const getColor = (id:string) => {
+    if(id=='normal'){
+      return 'green'
+    }
+    else if(id=='late'){
+      return 'pink'
+    }
+    else if(id=='absent'){
+      return 'red'
+    }
+    else{
+      return 'blue'
+    }
 }
 
 const columns: ColumnsType<DataType> = [
@@ -35,17 +65,24 @@ const columns: ColumnsType<DataType> = [
   {
     title: '考勤状态',
     dataIndex: 'status',
-  },
-  {
-    title: '操作',
-    dataIndex: 'option',
-    key: 'option',
-    render: () => (
-      <Space size="middle">
-        <Button type='primary'>修改状态</Button>
-      </Space>
+    render: (_, { status }) => (
+        <Tag color={getColor(status)} key={status}>
+          {getStatus(status)}
+        </Tag>
     ),
   },
+//   {
+//     title: '操作',
+//     dataIndex: 'option',
+//     key: 'option',
+//     render: (_,{studentId}) => (
+//       <Space size="middle">
+//         <Button type='primary' onClick={()=>{
+//             console.log(studentId)
+//         }}>修改状态</Button>
+//       </Space>
+//     ),
+//   },
 ];
 
 const onChange: TableProps<DataType>['onChange'] = (pagination, filters, sorter, extra) => {
