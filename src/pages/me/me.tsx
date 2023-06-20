@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Descriptions, Row, Statistic } from 'antd';
+import { Button, Col, Descriptions, Row, Statistic } from 'antd';
 import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
 
 const Me: React.FC = () => (
@@ -47,9 +47,7 @@ const Me: React.FC = () => (
         </Col>
     </Row>
     </div>
-
-
-
+    <Button type='primary' style={{marginTop:20}}>退出登陆</Button>
    </div>
 );
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Col, Row, Select, Table } from 'antd';
 import type { ColumnsType, TableProps } from 'antd/es/table';
 import { useNavigate } from 'react-router-dom'
@@ -21,113 +21,181 @@ export type courseShow = {
   courseColor: string;
 }
 
-const courseList1:courseShow[] = [
-  {
-    courseName: '高级编程',
-    courseId: 'FRKNP-G74eWf9c4B',
-    courseColor: 'rgb(255, 238, 170)'
-  },
-  {
-    courseName: '',
-    courseId: '',
-    courseColor: ''
-  },
-  {
-    courseName: '',
-    courseId: '',
-    courseColor: ''
-  },
-  {
-    courseName: '',
-    courseId: '',
-    courseColor: ''
-  },
-  {
-    courseName: '高级编程',
-    courseId: 'FRKNP-G74eWf9c4B',
-    courseColor: 'rgb(255, 238, 170)'
-  },
-]
-
-const courseList2:courseShow[] = [
-  {
-    courseName: '',
-    courseId: '',
-    courseColor: ''
-  },
-  {
-    courseName: '云计算',
-    courseId: 'CRXFA-31yemoDAS0',
-    courseColor: 'rgb(159, 249, 180)'
-  },
-  {
-    courseName: '',
-    courseId: '',
-    courseColor: ''
-  },
-  {
-    courseName: '',
-    courseId: '',
-    courseColor: ''
-  },
-  {
-    courseName: '',
-    courseId: '',
-    courseColor: ''
-  },
-]
-
-const courseList3:courseShow[] = [
-  {
-    courseName: '',
-    courseId: '',
-    courseColor: ''
-  },
-  {
-    courseName: '',
-    courseId: '',
-    courseColor: ''
-  },
-  {
-    courseName: '',
-    courseId: '',
-    courseColor: ''
-  },
-  {
-    courseName: '',
-    courseId: '',
-    courseColor: ''
-  },
-  {
-    courseName: '',
-    courseId: '',
-    courseColor: ''
-  },
-]
-
 const CourseInfo = (props:Props) => {
   const navigate = useNavigate()
   const date:string[] = ['周一','周二','周三','周四','周五']
+  const [term, setTerm] = useState('2023年春季学期')
+  const [courseList1, setCourseList1] = useState<courseShow[]>([])
+  const [courseList2, setCourseList2] = useState<courseShow[]>([])
 
   const onChange: TableProps<DataType>['onChange'] = (pagination, filters, sorter, extra) => {
     console.log('params', pagination, filters, sorter, extra);
   };
   
 
+  const courseList1_term1:courseShow[] = [
+    {
+      courseName: '高级编程',
+      courseId: 'FRKNP-G74eWf9c4B',
+      courseColor: 'rgb(255, 238, 170)'
+    },
+    {
+      courseName: '',
+      courseId: '',
+      courseColor: ''
+    },
+    {
+      courseName: '高级编程',
+      courseId: 'FRKNP-G74eWf9c4B',
+      courseColor: 'rgb(255, 238, 170)'
+    },
+    {
+      courseName: '',
+      courseId: '',
+      courseColor: ''
+    },
+    {
+      courseName: '',
+      courseId: '',
+      courseColor: ''
+    },
+  ]
+  
+  const courseList2_term1:courseShow[] = [
+    {
+      courseName: '',
+      courseId: '',
+      courseColor: ''
+    },
+    {
+      courseName: '云计算',
+      courseId: 'CRXFA-31yemoDAS0',
+      courseColor: 'rgb(159, 249, 180)'
+    },
+    {
+      courseName: '',
+      courseId: '',
+      courseColor: ''
+    },
+    {
+      courseName: '',
+      courseId: '',
+      courseColor: ''
+    },
+    {
+      courseName: '',
+      courseId: '',
+      courseColor: ''
+    },
+  ]
+  
+  const courseList3:courseShow[] = [
+    {
+      courseName: '',
+      courseId: '',
+      courseColor: ''
+    },
+    {
+      courseName: '',
+      courseId: '',
+      courseColor: ''
+    },
+    {
+      courseName: '',
+      courseId: '',
+      courseColor: ''
+    },
+    {
+      courseName: '',
+      courseId: '',
+      courseColor: ''
+    },
+    {
+      courseName: '',
+      courseId: '',
+      courseColor: ''
+    },
+  ]
+
+  const courseList1_term2:courseShow[] = [
+    {
+      courseName: '',
+      courseId: '',
+      courseColor: ''
+    },
+    {
+      courseName: '',
+      courseId: '',
+      courseColor: ''
+    },
+    {
+      courseName: '计算机逻辑基础',
+      courseId: 'FRKNP-G74eWf9c4B',
+      courseColor: 'rgb(242, 152, 152)'
+    },
+    {
+      courseName: '',
+      courseId: '',
+      courseColor: ''
+    },
+    {
+      courseName: '计算机逻辑基础',
+      courseId: 'FRKNP-G74eWf9c4B',
+      courseColor: 'rgb(242, 152, 152)'
+    },
+  ]
+
+  const courseList2_term2:courseShow[] = [
+    {
+      courseName: 'JAVA面向对象基础',
+      courseId: 'CRXFA-31yemoDAS0',
+      courseColor: 'rgb(255, 238, 170)'
+    },
+    {
+      courseName: '',
+      courseId: '',
+      courseColor: ''
+    },
+    {
+      courseName: '',
+      courseId: '',
+      courseColor: ''
+    },
+    {
+      courseName: '',
+      courseId: '',
+      courseColor: ''
+    },
+    {
+      courseName: '',
+      courseId: '',
+      courseColor: ''
+    },
+  ]
+
+
+  useEffect(() => {
+    setCourseList1(term=='2023年春季学期' ? courseList1_term1 : courseList1_term2)
+
+    setCourseList2(term=='2023年春季学期' ? courseList2_term1 : courseList2_term2)
+  },[term])
+  
+
   return (
     <div>
         <Select
-          defaultValue="2023春季学期"
-          style={{ width: 140,marginRight:20,marginBottom:20 }}
+          defaultValue="2023年春季学期"
+          style={{ width: 140, marginRight:20, marginBottom:20 }}
+          onChange={(value)=>setTerm(value)}
           options={[
-            { value: '2020春季学期', label: '2020春季学期' },
-            { value: '2020秋季学期', label: '2020秋季学期' },
-            { value: '2021春季学期', label: '2021春季学期' },
-            { value: '2021秋季学期', label: '2021秋季学期' },
-            { value: '2022春季学期', label: '2022春季学期' },
-            { value: '2022秋季学期', label: '2022秋季学期' },
-            { value: '2023春季学期', label: '2023春季学期' },
-            { value: '2023秋季学期', label: '2023秋季学期' },
+            { value: '2020年春季学期', label: '2020年春季学期' },
+            { value: '2020年秋季学期', label: '2020年秋季学期' },
+            { value: '2021年春季学期', label: '2021年春季学期' },
+            { value: '2021年秋季学期', label: '2021年秋季学期' },
+            { value: '2022年春季学期', label: '2022年春季学期' },
+            { value: '2022年秋季学期', label: '2022年秋季学期' },
+            { value: '2023年春季学期', label: '2023年春季学期' },
+            { value: '2023年秋季学期', label: '2023年秋季学期' },
           ]}
         />
         <Select
@@ -164,12 +232,12 @@ const CourseInfo = (props:Props) => {
                 props.setStatus(1)
                 props.setCourseId(value.courseId)
                 }}>
-                  <div style={{backgroundColor:`${value.courseColor}`,borderRadius:10,fontSize:15,height:80,padding:10,margin:2}}>
+                  <div style={{backgroundColor:`${value.courseColor}`,borderRadius:10,fontSize:16,height:80,padding:10,margin:2}}>
                   {value.courseName}<br/>{value.courseId}
                   </div>
                 </Col>
               : <Col span={4}>
-                  <div style={{backgroundColor:`${value.courseColor}`,borderRadius:10,fontSize:15,height:80,padding:10,margin:2}}>
+                  <div style={{backgroundColor:`${value.courseColor}`,borderRadius:10,fontSize:16,height:80,padding:10,margin:2}}>
                   </div>
                 </Col>
             ))}
@@ -178,7 +246,10 @@ const CourseInfo = (props:Props) => {
             <Col span={4} style={{borderRadius:10,fontSize:18,padding:10}}>10:00</Col>
             {courseList2.map((value,index)=>(
               value.courseName!='' 
-              ? <Col span={4}>
+              ? <Col span={4} onClick={()=>{
+                props.setStatus(1)
+                props.setCourseId(value.courseId)
+                }}>
                   <div style={{backgroundColor:`${value.courseColor}`,borderRadius:10,fontSize:16,height:80,padding:10,margin:2}}>
                   {value.courseName}<br/>{value.courseId}
                   </div>

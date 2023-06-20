@@ -220,9 +220,8 @@ const CourseDetail = (props:Props) => {
     </Descriptions>
     <div style={{marginTop:20,marginBottom:50}}>
         <Button type="primary" style={{marginRight:20}} onClick={()=>props.setStatus(0)}>返回课程表</Button> 
-        <Button type="primary" style={{marginRight:20}}>发起签到</Button> 
-        <Button type="primary" style={{marginRight:20}} onClick={()=>props.setStatus(2)}>查看所有签到</Button> 
-        <Button type="primary">导出缺课名单</Button>
+        <Button type="primary" style={{marginRight:20}} onClick={()=>props.setStatus(2)}>发起签到和查看签到</Button> 
+        <Button type="primary">导入缺课名单</Button>
     </div>
     
     <h2>课程点名列表</h2>

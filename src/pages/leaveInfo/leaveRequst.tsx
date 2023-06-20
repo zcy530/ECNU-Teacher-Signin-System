@@ -6,16 +6,24 @@ import { ColumnType, ColumnsType, FilterConfirmProps } from 'antd/es/table/inter
 import Highlighter from 'react-highlight-words';
 
 interface DataType {
-  key:number;
-  course: string;
-  name: string;
+  noteId: number;
   week: number;
-  time: string;
-  status: string;
   reason: string;
-  operation: string;
+  time: string;
+  status: number;
+  term: string;
+  name: string | null;
+  refuseReason: string | null;
+  type: string | null;
+  changeTime: string | null;
+  id: number | null;
+  student_id: number;
+  course_id: string;
+  courseName: string;
+  professor_id: number;
+  professorName: string;
+  attach: string;
 }
-
 type DataIndex = keyof DataType;
 
 const LeaveRequest: React.FC = () => {
@@ -24,21 +32,39 @@ const LeaveRequest: React.FC = () => {
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef<InputRef>(null);
   const [leaveData, setLeaveData] = useState<DataType[]>([]);
+  const [term, setTerm] = useState("2023年春季学期")
+  const [courseId, setCourseId] = useState("CRXFA-31yemoDAS0")
+  
 
   useEffect(() => {
-    fetch(`http://8.130.86.79:8072/office-service/student/info?studentId=10205101485`, {
-      method: 'GET',
+
+    const leavebody = {
+        "professorId": "5103909",
+        "status": "1",
+        "courseId": courseId,
+        "term": term,
+        "pageParams": {
+            "pageNumber": "1",
+            "pageSize": "10"
+        }
+    }
+    fetch(`http://8.130.86.79:8072/leave-service/professor/leaverecord`, {
+      method: 'POST',
       headers: {
         'Content-type': 'application/json; charset=UTF-8'
       },
+      body: JSON.stringify(leavebody)
     })
     .then(response => response.json())
     .then((value)=> {
+      console.log(value)
+      setLeaveData(value)
     })
-  })
+  },[courseId])
   
   const handleChange = (value: string) => {
     console.log(`selected ${value}`);
+    setCourseId(value)
   };
 
   const handleSearch = (
@@ -56,50 +82,6 @@ const LeaveRequest: React.FC = () => {
     setSearchText('');
   };
   
-  const mydata: DataType[] = [
-    {
-      key:1,
-      course: '高级编程',
-      name: '张彩仪',
-      week: 1,
-      time: '2023-05-30 18:00',
-      status: '待审批',
-      reason: '身体不舒服',
-      operation: '同意',
-    },
-    {
-      key:2,
-      course: '高级编程',
-      name: '朱岩',
-      week: 4,
-      time: '2023-06-03 18:00',
-      status: '待审批',
-      reason: '胃病，想要去医院',
-      operation: '同意',
-    },
-    {
-      key:3,
-      course: 'JAVA面向对象',
-      name: '张彩仪',
-      week: 1,
-      time: '2023-05-30 18:00',
-      status: '待审批',
-      reason: '身体不舒服',
-      operation: '同意',
-    },
-    {
-      key:4,
-      course: 'JAVA面向对象',
-      name: '张彩仪',
-      week: 1,
-      time: '2023-05-30 18:00',
-      status: '待审批',
-      reason: '身体不舒服',
-      operation: '同意',
-    }
-  ]
-
-
   const getColumnSearchProps = (dataIndex: DataIndex): ColumnType<DataType> => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
       <div style={{ padding: 8 }} onKeyDown={(e) => e.stopPropagation()}>
@@ -181,24 +163,20 @@ const LeaveRequest: React.FC = () => {
   const columns: ColumnsType<DataType> = [
     {
       title: '课程名称',
-      dataIndex: 'course',
-      key: 'course',
-      width: '15%',
-      ...getColumnSearchProps('course'),
+      dataIndex: 'courseName',
+      key: 'courseName',
+      ...getColumnSearchProps('courseName'),
     },
     {
-      title: '姓名',
-      dataIndex: 'name',
-      key: 'name',
-      width: '12%',
-      ...getColumnSearchProps('name'),
+      title: '请假学生',
+      dataIndex: 'student_id',
+      key: 'student_id',
+      ...getColumnSearchProps('student_id'),
     },
     {
       title: '课时',
       dataIndex: 'week',
       key: 'week',
-      width: '10%',
-      ...getColumnSearchProps('week'),
       sorter: (a, b) => a.week - b.week,
       sortDirections: ['descend', 'ascend'],
     },
@@ -206,23 +184,20 @@ const LeaveRequest: React.FC = () => {
       title: '原因',
       dataIndex: 'reason',
       key: 'reason',
-      width: '18%',
       ...getColumnSearchProps('reason'),
     },
     {
       title: '提交时间',
       dataIndex: 'time',
       key: 'time',
-      width: '20%',
       ...getColumnSearchProps('time'),
     },
     {
       title: '状态',
       dataIndex: 'status',
       key: 'status',
-      width: '10%',
       ...getColumnSearchProps('status'),
-      render: () => (<Tag color={'green'} key={'1'}>待审核</Tag>
+      render: () => (<Tag color={'green'} key={'2'}>待审核</Tag>
       ),
     },
     {
@@ -232,8 +207,8 @@ const LeaveRequest: React.FC = () => {
       width: '20%',
       render: () => (
         <Space size="middle">
-          <a>同意</a>
-          <a>拒绝</a>
+          <Button type='primary'>同意</Button>
+          <Button type='primary'>拒绝</Button>
         </Space>
       ),
     },
@@ -254,16 +229,16 @@ const LeaveRequest: React.FC = () => {
           ]}
         />
         <Select
-          defaultValue="高级编程"
+          defaultValue="云计算"
           style={{ width: 140,marginRight:20 }}
           onChange={handleChange}
           options={[
-            { value: '高级编程', label: '高级编程' },
-            { value: '云计算', label: '云计算' },
+            { value: 'FRKNP-G74eWf9c4B', label: '高级编程' },
+            { value: 'CRXFA-31yemoDAS0', label: '云计算' },
           ]}
         />
         {/* <Search placeholder="input search text" allowClear  style={{ width: 300, marginBottom: 20}} /> */}
-        <Table columns={columns} dataSource={mydata} />
+        <Table columns={columns} dataSource={leaveData} />
     </div>
   );
 };

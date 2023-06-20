@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import CourseInfo from './courseInfo.tsx';
 import CourseDetail from './courseDetail.tsx';
 import CheckAllSignin from './checkAllSignin.tsx';
+import SigninDetail from './signinDetail.tsx';
 
 const MyCourse = () => {
 
@@ -15,6 +16,8 @@ const MyCourse = () => {
             return <CourseDetail courseId={courseId} setStatus={setStatus}/>
         } else if (status==2) {
             return <CheckAllSignin courseId={courseId} setStatus={setStatus}/>
+        } else if (status==3) {
+            return <SigninDetail rcrecordId={582} setStatus={setStatus}/>
         }
     }
 

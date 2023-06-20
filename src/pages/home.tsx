@@ -3,7 +3,9 @@ import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   UploadOutlined,
+  MessageOutlined,
   UserOutlined,
+  AppstoreOutlined,
   VideoCameraOutlined,
 } from '@ant-design/icons';
 import { Layout, Menu, Button, theme } from 'antd';
@@ -21,8 +23,8 @@ const Home: React.FC = () => {
   return (
     <Layout>
       <Sider trigger={null} collapsible collapsed={collapsed}>
-      <div style={{ height: 32, margin: 16, background: 'rgba(255, 255, 255, 0.2)' }} />
-        <div className="logo" />
+      <div style={{ height: 38, margin: 16 }} />
+        {/* <div className="logo" /> */}
         <Menu
           theme="dark"
           mode="inline"
@@ -33,17 +35,17 @@ const Home: React.FC = () => {
           items={[
             {
               key: '1',
-              icon: <UserOutlined />,
+              icon: <MessageOutlined />,
               label: '请假消息',
             },
             {
               key: '2',
-              icon: <VideoCameraOutlined />,
+              icon: <AppstoreOutlined />,
               label: '我的课程',
             },
             {
               key: '3',
-              icon: <UploadOutlined />,
+              icon: <UserOutlined />,
               label: '个人中心',
             },
           ]}
