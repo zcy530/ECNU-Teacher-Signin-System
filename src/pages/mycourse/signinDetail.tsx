@@ -8,6 +8,7 @@ import { FilterConfirmProps } from 'antd/es/table/interface';
 export interface Props {
   rcrecordId: number;
   setStatus: (status: number) => void;
+  rollcallrecordid: number;
 }  
 
 interface DataType {
@@ -94,7 +95,7 @@ const SigninDetail = (props:Props) => {
     const [data,setData] = useState<DataType[]>([])
 
     useEffect(() => {
-        fetch(`http://8.130.86.79:8072/signin-service/course/signup/student/all?rcrecordId=582`, {
+        fetch(`http://8.130.86.79:8072/signin-service/course/signup/student/all?rcrecordId=${props.rollcallrecordid}`, {
           method: 'GET',
           headers: {
             'Content-type': 'application/json; charset=UTF-8'
@@ -111,7 +112,8 @@ const SigninDetail = (props:Props) => {
     <div>
 
     <h2 style={{marginTop:30}}>本节课签到情况详情</h2>
-    <Table columns={columns} dataSource={data} onChange={onChange} />
+    <text style={{marginBottom:20}}>本次签到的id号：{props.rollcallrecordid}</text>
+    <Table columns={columns} dataSource={data} onChange={onChange} style={{marginTop:10}}/>
     <Button type='primary' style={{marginTop:0}} onClick={()=>props.setStatus(2)}>返回发起签到页面</Button>
     </div>
     

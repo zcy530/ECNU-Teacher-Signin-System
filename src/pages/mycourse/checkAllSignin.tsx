@@ -8,6 +8,7 @@ import { FilterConfirmProps } from 'antd/es/table/interface';
 export interface Props {
   courseId: string;
   setStatus: (status: number) => void;
+  setrollcallrecordid: (id: number) => void;
 }  
 
 interface DataType {
@@ -44,13 +45,18 @@ const CheckAllSignin = (props:Props) => {
 
       const columns: ColumnsType<DataType> = [
         {
-          title: '请假课时',
+            title: '签到id',
+            dataIndex: 'roll_call_record_id',
+            sorter: (a, b) => a.roll_call_record_id - b.roll_call_record_id,
+          },
+        {
+          title: '签到课时',
           dataIndex: 'week',
           defaultSortOrder:'ascend',
           sorter: (a, b) => a.week - b.week,
         },
         {
-          title: '请假学期',
+          title: '签到学期',
           dataIndex: 'term',
         },
         {
@@ -70,9 +76,12 @@ const CheckAllSignin = (props:Props) => {
           dataIndex: 'option',
           key: 'option',
           width: '20%',
-          render: () => (
+          render: (_,{roll_call_record_id}) => (
             <Space size="middle">
-              <Button type='primary' onClick={()=>{props.setStatus(3)}}>查看详情</Button>
+              <Button type='primary' onClick={()=>{
+                props.setStatus(3)
+                props.setrollcallrecordid(roll_call_record_id)
+                }}>查看详情</Button>
             </Space>
           ),
         },
@@ -99,7 +108,7 @@ const CheckAllSignin = (props:Props) => {
             "professor_id": 5103909,
             "method": signway=='password'?kouling:signway,
             "start_time": "2023-06-21 10:00:00",
-            "end_time": "2023-06-21 11:00:00",
+            "end_time": "2023-06-21 12:00:00",
             "term": "2023年春季学期"
         }
           fetch('http://8.130.86.79:8072/signin-service/course/sign/add', {

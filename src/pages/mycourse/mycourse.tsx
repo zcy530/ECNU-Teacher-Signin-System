@@ -8,6 +8,7 @@ const MyCourse = () => {
 
     const [status, setStatus] = useState<number>(0);
     const [courseId, setCourseId] = useState<string>('');
+    const [rollcallrecordid, setrollcallrecordid] = useState<number>(0);
 
     const renderRightComponent = () => {
         if (status==0) {
@@ -15,9 +16,9 @@ const MyCourse = () => {
         } else if (status==1) {
             return <CourseDetail courseId={courseId} setStatus={setStatus}/>
         } else if (status==2) {
-            return <CheckAllSignin courseId={courseId} setStatus={setStatus}/>
+        return <CheckAllSignin courseId={courseId} setStatus={setStatus} setrollcallrecordid={setrollcallrecordid}/>
         } else if (status==3) {
-            return <SigninDetail rcrecordId={582} setStatus={setStatus}/>
+            return <SigninDetail rcrecordId={582} setStatus={setStatus} rollcallrecordid={rollcallrecordid}/>
         }
     }
 
